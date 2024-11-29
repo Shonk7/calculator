@@ -10,7 +10,7 @@ export default function ClearButton({ dispatch, className = "" }: Props) {
       className={className}
       onClick={() => dispatch({ type: ACTIONS.CLEAR, payload: {} })}
     >
-      AC
+      C
     </button>
   );
 }
