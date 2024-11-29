@@ -43,15 +43,15 @@ function reducer(state: State, action: any) {
     case ACTIONS.CLEAR:
       return {
         ...state,
-        currentOperand: "",
+        currentOperand: "0",
         prevOperand: "",
         operation: "",
       };
     case ACTIONS.CHOOSE_OPERATION:
-      if (state.currentOperand === ".") {
+      if (state.currentOperand === "0.") {
         return state;
       }
-      if (state.currentOperand === "" && state.prevOperand === "") {
+      if (state.currentOperand === "0" && state.prevOperand === "") {
         return state;
       }
       if (state.currentOperand === "") {
@@ -95,7 +95,7 @@ function reducer(state: State, action: any) {
         return {
           ...state,
           overwrite: false,
-          currentOperand: "",
+          currentOperand: "0",
         };
       }
       if (state.currentOperand === "") return state;
@@ -107,6 +107,17 @@ function reducer(state: State, action: any) {
         currentOperand: state.currentOperand.slice(0, -1),
       };
     case ACTIONS.INVERSE:
+      if (state.currentOperand === "") {
+        return state;
+      }
+      if (state.currentOperand === "0") {
+        return {
+          ...state,
+          overwrite: false,
+          currentOperand: "-0",
+        };
+      }
+
       return {
         ...state,
         overwrite: false,
@@ -114,6 +125,9 @@ function reducer(state: State, action: any) {
       };
 
     case ACTIONS.PERCENTAGE:
+      if (state.currentOperand === "") {
+        return state;
+      }
       return {
         ...state,
         overwrite: false,
@@ -162,7 +176,7 @@ function formatOperand(operand: string) {
 function App() {
   const [{ currentOperand, prevOperand, operation }, dispatch] = useReducer(
     reducer,
-    { currentOperand: "", prevOperand: "", operation: "", overwrite: false }
+    { currentOperand: "0", prevOperand: "", operation: "", overwrite: false }
   );
 
   return (
@@ -174,30 +188,61 @@ function App() {
         </div>
         <div className="current-operand">{formatOperand(currentOperand)}</div>
       </div>
-      <ClearButton dispatch={dispatch} />
+      <ClearButton className="white-btn" dispatch={dispatch} />
       {/* <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>
         DEL
       </button> */}
-      <button onClick={() => dispatch({ type: ACTIONS.INVERSE })}>+/-</button>
-      <button onClick={() => dispatch({ type: ACTIONS.PERCENTAGE })}>%</button>
-      <OperationButton operation="÷" dispatch={dispatch} />
+      <button
+        onClick={() => dispatch({ type: ACTIONS.INVERSE })}
+        className="white-btn"
+      >
+        +/-
+      </button>
+      <button
+        onClick={() => dispatch({ type: ACTIONS.PERCENTAGE })}
+        className="white-btn"
+      >
+        %
+      </button>
+      <OperationButton
+        className="orange-btn"
+        operation="÷"
+        dispatch={dispatch}
+      />
       {/* <DigitButton digit="÷" dispatch={dispatch} /> */}
       <DigitButton digit="7" dispatch={dispatch} />
       <DigitButton digit="8" dispatch={dispatch} />
       <DigitButton digit="9" dispatch={dispatch} />
-      <OperationButton operation="×" dispatch={dispatch} />
+      <OperationButton
+        className="orange-btn"
+        operation="×"
+        dispatch={dispatch}
+      />
       <DigitButton digit="4" dispatch={dispatch} />
       <DigitButton digit="5" dispatch={dispatch} />
       <DigitButton digit="6" dispatch={dispatch} />
-      <OperationButton operation="-" dispatch={dispatch} />
+      <OperationButton
+        className="orange-btn"
+        operation="-"
+        dispatch={dispatch}
+      />
       <DigitButton digit="1" dispatch={dispatch} />
       <DigitButton digit="2" dispatch={dispatch} />
       <DigitButton digit="3" dispatch={dispatch} />
-      <OperationButton operation="+" dispatch={dispatch} />
-      <DigitButton className="span-two" digit="0" dispatch={dispatch} />
+      <OperationButton
+        className="orange-btn"
+        operation="+"
+        dispatch={dispatch}
+      />
+      <DigitButton className="zero-btn" digit="0" dispatch={dispatch} />
       {/* <button className="span-two">0</button> */}
       <DigitButton digit="." dispatch={dispatch} />
-      <button onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
+      <button
+        className="orange-btn"
+        onClick={() => dispatch({ type: ACTIONS.EVALUATE })}
+      >
+        =
+      </button>
     </div>
   );
 }

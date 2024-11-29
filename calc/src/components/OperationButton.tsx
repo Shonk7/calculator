@@ -5,9 +5,14 @@ interface Props {
   operation: string;
   className?: string;
 }
-export default function OperationButton({ dispatch, operation }: Props) {
+export default function OperationButton({
+  dispatch,
+  operation,
+  className = "",
+}: Props) {
   return (
     <button
+      className={className}
       onClick={() =>
         dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operation } })
       }
