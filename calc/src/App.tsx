@@ -169,10 +169,19 @@ const INTEGER_FORMATTER = new Intl.NumberFormat("en-us", {
 // Adding commas
 function formatOperand(operand: string) {
   if (operand === "") return;
+
   const [integer, decimal] = operand.split(".");
-  if (decimal == null) return INTEGER_FORMATTER.format(parseInt(integer));
-  return `${INTEGER_FORMATTER.format(parseInt(integer))}.${decimal}`;
+
+  if (decimal == null) {
+    return INTEGER_FORMATTER.format(parseInt(integer));
+  }
+
+  // Limit the decimal part to a maximum of 8 digits
+  const truncatedDecimal = decimal.substring(0, 8);
+
+  return `${INTEGER_FORMATTER.format(parseInt(integer))}.${truncatedDecimal}`;
 }
+
 function App() {
   const [{ currentOperand, prevOperand, operation }, dispatch] = useReducer(
     reducer,
